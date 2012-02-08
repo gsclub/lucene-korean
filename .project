@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>kr.morph</name>
+	<name>kr.analyzer.3x</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>morph</name>
+			<type>2</type>
+			<location>D:/eclipse-workspace/search/kr.morph/src</location>
+		</link>
+	</linkedResources>
 </projectDescription>
