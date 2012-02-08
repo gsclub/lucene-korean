@@ -100,7 +100,7 @@ public class MorphAnalyzer {
 				continue;
 			}
 
-			if(o.getPatn()<=PatternConstants.PTN_VM&&o.getStem().length()>2) {
+			if(o.getPatn()<PatternConstants.PTN_VM&&o.getStem().length()>2) {
 				 if(!(correct&&o.getPatn()==PatternConstants.PTN_N)) confirmCNoun(o);
 				 if(o.getScore()==AnalysisOutput.SCORE_CORRECT) changed=true;
 			}

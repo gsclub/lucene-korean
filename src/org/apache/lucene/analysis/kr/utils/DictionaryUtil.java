@@ -75,7 +75,7 @@ public class DictionaryUtil {
 		for(String compound: compounds) {		
 			String[] infos = StringUtil.split(compound,":");
 			if(infos.length!=2) continue;
-			WordEntry entry = new WordEntry(infos[0].trim(),"20000X".toCharArray());
+			WordEntry entry = new WordEntry(infos[0].trim(),"20000000X".toCharArray());
 			entry.setCompounds(compoundArrayToList(infos[1], StringUtil.split(infos[1],",")));
 			dictionary.add(entry.getWord(), entry);
 		}

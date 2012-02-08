@@ -110,4 +110,31 @@ public class Utilities {
 		return buff.toString();
 		
 	}
+	
+   // -----------------------------------------------------------------------
+   /**
+    * <p>
+    * Gets a System property, defaulting to <code>null</code> if the property cannot be read.
+    * </p>
+    * 
+    * <p>
+    * If a <code>SecurityException</code> is caught, the return value is <code>null</code> and a message is written to
+    * <code>System.err</code>.
+    * </p>
+    * 
+    * @param property
+    *            the system property name
+    * @return the system property value or <code>null</code> if a security problem occurs
+    */
+   public static String getSystemProperty(String property) {
+       try {
+           return System.getProperty(property);
+       } catch (SecurityException ex) {
+           // we are not allowed to look at this property
+           System.err.println("Caught a SecurityException reading the system property '" + property
+                   + "'; the SystemUtils property value will default to null.");
+           return null;
+       }
+   }  
+	   
 }

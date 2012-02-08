@@ -86,7 +86,7 @@ public class SyllableUtil {
 		
 		if(Syllables==null) Syllables = getSyllableFeature();
 	
-		if(idx<0) 
+		if(idx<0||idx>=Syllables.size()) 
 			return (char[])Syllables.get(Syllables.size()-1);
 		else 
 			return (char[])Syllables.get(idx);

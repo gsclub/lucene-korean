@@ -11,6 +11,8 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.lucene.analysis.kr.morph.AnalysisOutput;
+import org.apache.lucene.analysis.kr.morph.CompoundEntry;
+import org.apache.lucene.analysis.kr.morph.CompoundNounAnalyzer;
 import org.apache.lucene.analysis.kr.morph.MorphAnalyzer;
 import org.apache.lucene.analysis.kr.morph.MorphAnalyzerManager;
 import org.apache.lucene.analysis.kr.morph.WordEntry;
@@ -91,7 +93,7 @@ public class MorphAnalyzerTest extends TestCase {
 	
 	public void testGetWordEntry() throws Exception {
 		String s = "밤하늘";
-		WordEntry we = DictionaryUtil.getNoun(s);
+		WordEntry we = DictionaryUtil.getCNoun(s);
 		System.out.println(we.getWord());
 	}
 	
@@ -165,6 +167,37 @@ public class MorphAnalyzerTest extends TestCase {
 		outputs.addAll(youngOutputs);
 		Collections.sort(outputs);
 		FileUtils.writeLines(new File( "data/all.txt"), outputs);
+	}
+	
+	public void testCompoundNounsWithinDic() throws Exception {		
+		
+		String input = "고투자율";
+
+		   WordEntry cnoun = DictionaryUtil.getCNoun(input);
+		   List<CompoundEntry> list = null;
+		   if(cnoun!=null && cnoun.getFeature(WordEntry.IDX_NOUN)=='2') {
+			   list = cnoun.getCompounds();
+			   
+			   for(int j=0;j<list.size();j++) {
+				   System.out.println(list.get(j).getWord());
+			   }
+		   }	
+		   
+	}
+	
+	public void testCompoundNouns() throws Exception {		
+		
+		 String input = "가돌리늄착화합물";
+		 CompoundNounAnalyzer cnAnalyzer = new CompoundNounAnalyzer();	
+		 cnAnalyzer.setExactMach(false);
+		 
+		  List<CompoundEntry> list = cnAnalyzer.analyze(input);
+		  if(list==null) return;
+		  
+		  for(int i=0;i<list.size();i++) {
+			  System.out.println(list.get(i).getWord());
+		  }
+
 	}
 }
 
