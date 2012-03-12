@@ -274,7 +274,7 @@ public class KoreanFilter extends TokenFilter {
 		for(int i=0;i<term.length();i++) {
 
 			char[] chs = HanjaUtils.convertToHangul(term.charAt(i));			
-			if(chs.length<1) continue;
+			if(chs==null) continue;
 		
 			int caniSize = candiList.size();
 			for(int j=0;j<caniSize;j++) { 
