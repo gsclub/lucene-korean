@@ -109,14 +109,15 @@ public class KoreanFilter extends TokenFilter {
 		this.exactMatch = match;
 	}
 	
-	public boolean incrementToken() throws IOException {
-
+	public final boolean incrementToken() throws IOException {
 		if(curTermBuffer!=null&&morphQueue.size()>0) {
-		   setTermBufferByQueue();
-           return true;
+		    setTermBufferByQueue();
+		    return true;
 		}
 
-		if(!input.incrementToken()) return false;
+		if(!input.incrementToken()) {
+			return false;
+		}
 		
         curTermBuffer = termAtt.buffer().clone();
         curTermLength = termAtt.length();
@@ -135,7 +136,9 @@ public class KoreanFilter extends TokenFilter {
 			throw new IOException("Korean Filter MorphException\n"+e.getMessage());
 		}
 
-		if(morphQueue==null||morphQueue.size()==0) return false;
+		if(morphQueue==null||morphQueue.size()==0) {
+			return true;
+		}
 		
 		setTermBufferByQueue();	
 
@@ -146,7 +149,7 @@ public class KoreanFilter extends TokenFilter {
 	/**
 	 * queue 에 저장된 값으로 buffer의 값을 복사한다.
 	 */
-	private void setTermBufferByQueue() {		
+	private void setTermBufferByQueue() {
         clearAttributes();
         String term = morphQueue.removeFirst();
         int pos = new String(curTermBuffer).indexOf(term);
@@ -162,7 +165,6 @@ public class KoreanFilter extends TokenFilter {
 	 * @throws MorphException
 	 */
 	private void analysisKorean(String input) throws MorphException {
-	
 		List<AnalysisOutput> outputs = morph.analyze(input);
 		if(outputs.size()==0) return;
 		
@@ -195,15 +197,14 @@ public class KoreanFilter extends TokenFilter {
 		
 		int i=0;
 		while(iter.hasNext()) {			
-			String text = iter.next();			
-			if(text.length()<=1) continue;			
+			String text = iter.next();
+			if(text.length()<=1) continue;
 			morphQueue.add(text);
 		}
 	
 	}
 	
 	private void extractKeyword(List<AnalysisOutput> outputs, Map<String,Integer> map) throws MorphException {
-		
 		for(AnalysisOutput output : outputs) {			
 
 			if(output.getPos()!=PatternConstants.POS_VERB) {
@@ -223,6 +224,7 @@ public class KoreanFilter extends TokenFilter {
 					else if(jj>1 && cnoun.getWord().length()==1)
 						map.put(cnouns.get(jj).getWord()+cnoun.getWord(),  new Integer(0));
 				}
+
 			} else if(bigrammable){
 				addBiagramToMap(output.getStem(),map);
 			}
@@ -264,7 +266,6 @@ public class KoreanFilter extends TokenFilter {
 	 * @throws MorphException
 	 */
 	private void analysisChinese(String term) throws MorphException {	
-		
 		morphQueue.add(term);
 		if(term.length()<2) return; // 1글자 한자는 색인어로 한글을 추출하지 않는다.
 		
@@ -324,7 +325,6 @@ public class KoreanFilter extends TokenFilter {
 	}
 	
 	private List confirmCNoun(String input) throws MorphException {
-		
 		   WordEntry cnoun = DictionaryUtil.getCNoun(input);
 		   if(cnoun!=null && cnoun.getFeature(WordEntry.IDX_NOUN)=='2') {
 			  return cnoun.getCompounds();
@@ -335,7 +335,6 @@ public class KoreanFilter extends TokenFilter {
 	}
 	
 	private void analysisETC(String term) throws MorphException {
-
 	    final char[] buffer = termAtt.buffer();
 	    final int bufferLength = termAtt.length();
 	    final String type = typeAtt.type();
@@ -345,7 +344,7 @@ public class KoreanFilter extends TokenFilter {
 	        buffer[bufferLength-2] == '\'' &&
 	        (buffer[bufferLength-1] == 's' || buffer[bufferLength-1] == 'S')) {
 	      // Strip last 2 characters off
-	      morphQueue.add(term.substring(0,bufferLength - 2));
+	    	morphQueue.add(term.substring(0,bufferLength - 2));
 	    } else if (type == ACRONYM_TYPE) {      // remove dots
 	      int upto = 0;
 	      for(int i=0;i<bufferLength;i++) {
@@ -353,7 +352,7 @@ public class KoreanFilter extends TokenFilter {
 	        if (c != '.')
 	          buffer[upto++] = c;
 	      }
-	      morphQueue.add(term.substring(0,upto));
+	    	morphQueue.add(term.substring(0,upto));
 	    } else {
 	    	morphQueue.add(term);
 	    }
