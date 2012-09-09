@@ -47,9 +47,9 @@ public class KoreanEnv {
 	public static final String FILE_CJ = "cj.dic";
 	
 	public static final String FILE_KOREAN_PROPERTY = "org/apache/lucene/analysis/kr/korean.properties";
-	
-	public static final String ENCODING = "Encoding";
 
+        public static final String ENCODING = "Encoding";
+	
 	private Properties defaults = null;
 
 	/**
@@ -95,7 +95,7 @@ public class KoreanEnv {
 		defaults.setProperty(FILE_UNCOMPOUNDS,"org/apache/lucene/analysis/kr/dic/uncompounds.dic");
 		defaults.setProperty(FILE_CJ,"org/apache/lucene/analysis/kr/dic/cj.dic");
 
-		defaults.setProperty(ENCODING,"UTF-8");
+                defaults.setProperty(ENCODING, "UTF-8");
 	 }
 
 	
